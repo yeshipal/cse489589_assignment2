@@ -5,20 +5,19 @@
 
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
-#define A 1
-#define B 0
+#define AHOST 0
+#define BHOST 1
 
 using namespace std;
 
 int ackflag, aseq, bseq;
+//int check = 0;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;
 int lastsequence = 0;
 vector<pkt> packets;
-float timeout = 0.0;
-float RTT = 25.0;
-vector<float> times;
+
 struct pkt lastpkt;
 int checksum(struct pkt);
 

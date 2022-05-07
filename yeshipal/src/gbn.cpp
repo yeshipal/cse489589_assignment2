@@ -27,16 +27,16 @@ void A_output(struct msg message)
     if(numready == 0)
     {
         lastpkt = packets.at(seq);
-        tolayer3(A, lastpkt);
+        tolayer3(AHOST, lastpkt);
         cout << seq << endl;
         seq++;
-    starttimer(A, RTT);
+    starttimer(AHOST, RTT);
     numready++;
     }
     else if(numready < getwinsize())
     {
         lastpkt = packets.at(seq);
-        tolayer3(A, lastpkt);
+        tolayer3(AHOST, lastpkt);
         seq = seq + 1;
       numready++;
     }
@@ -58,7 +58,7 @@ void A_input(struct pkt packet)
         //cout << "BALH" << endl;
         //cout << endl;
         lastsucess += getwinsize();
-        stoptimer(A);
+        stoptimer(AHOST);
         numready = 0;
   }
 }
@@ -71,9 +71,9 @@ void A_timerinterrupt()
     for (int i = lastsequence; i < lastsequence + getwinsize() && i < numready; i++)
     {
         lastpkt = packets.at(i);
-        tolayer3(A, lastpkt);
+        tolayer3(AHOST, lastpkt);
     }
-    starttimer(A, RTT);
+    starttimer(AHOST, RTT);
 }  
 
 /* the following routine will be called once (only) before any other */
@@ -96,11 +96,11 @@ void B_input(struct pkt packet)
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         //cout << "Worked for both equal" << endl;
-        tolayer5(B, packet.payload);
+        tolayer5(BHOST, packet.payload);
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(B, *ACK);
+        tolayer3(BHOST, *ACK);
         //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
@@ -109,7 +109,7 @@ void B_input(struct pkt packet)
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq - 1;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(B, *ACK);
+        tolayer3(BHOST, *ACK);
     }
 }
 

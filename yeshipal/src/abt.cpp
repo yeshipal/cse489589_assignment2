@@ -31,8 +31,8 @@ void A_output(struct msg message)
         ackflag = 0;
         lastpkt = packets.at(aseq);
         int blah = checksum(lastpkt);
-        tolayer3(A, lastpkt);
-        starttimer(A, RTT);
+        tolayer3(AHOST, lastpkt);
+        starttimer(AHOST, RTT);
     }
 }
 
@@ -43,21 +43,21 @@ void A_input(struct pkt packet)
     if(packet.acknum == aseq)
     {
         ackflag = 1;
-        stoptimer(A);
+        stoptimer(AHOST);
         aseq++;
     }
     else
     {
-        starttimer(A, RTT);
-        tolayer3(A, lastpkt);
+        starttimer(AHOST, RTT);
+        tolayer3(AHOST, lastpkt);
     }
 }
 
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-    starttimer(A, RTT);
-    tolayer3(A, lastpkt);
+    starttimer(AHOST, RTT);
+    tolayer3(AHOST, lastpkt);
 }  
 
 /* the following routine will be called once (only) before any other */
@@ -77,11 +77,11 @@ void B_input(struct pkt packet)
   int bleh = checksum(packet);
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
-        tolayer5(B, packet.payload);
+        tolayer5(BHOST, packet.payload);
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(B, *ACK);
+        tolayer3(BHOST, *ACK);
         //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
@@ -91,7 +91,7 @@ void B_input(struct pkt packet)
         pkt *ACK = new struct pkt;
         (*ACK).acknum = -1;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(B, *ACK);
+        tolayer3(BHOST, *ACK);
     }
 }
 
