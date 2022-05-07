@@ -18,6 +18,8 @@
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
 
+
+
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
