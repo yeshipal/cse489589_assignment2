@@ -32,17 +32,17 @@ void A_output(struct msg message)
     if(numready == 0)
     {
         lastpkt = packets.at(seq);
-        tolayer3(AHOST, lastpkt);
+        tolayer3(A, lastpkt);
         times.push_back(get_sim_time());
         seq++;
-        starttimer(AHOST, RTT);
+        starttimer(A, RTT);
         //cout << "A_Output timer start" << endl;
         numready++;
     }
     else if(numready < getwinsize())
     {
         lastpkt = packets.at(seq);
-        tolayer3(AHOST, lastpkt);
+        tolayer3(A, lastpkt);
         seq = seq + 1;
         numready++;
     }
@@ -64,7 +64,7 @@ void A_input(struct pkt packet)
     else if(packet.acknum == lastsucess + getwinsize())
     {
         lastsucess += getwinsize();
-        stoptimer(AHOST);
+        stoptimer(A);
     }
 }
 
@@ -86,12 +86,12 @@ void A_timerinterrupt()
         timeout = get_sim_time() - times.at(i);
         if(timeout >= RTT)
         {
-            tolayer3(AHOST, lastpkt);
-            starttimer(AHOST, RTT);
+            tolayer3(A, lastpkt);
+            starttimer(A, RTT);
         }
     }
-    tolayer3(AHOST, lastpkt);
-    starttimer(AHOST, RTT);
+    tolayer3(A, lastpkt);
+    starttimer(A, RTT);
 }  
 /* the following routine will be called once (only) before any other */
 /* entity A routines are called. You can use it to do any initialization */
@@ -112,11 +112,11 @@ void B_input(struct pkt packet)
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         //cout << "Worked for both equal" << endl;
-        tolayer5(BHOST, packet.payload);
+        tolayer5(B, packet.payload);
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(BHOST, *ACK);
+        tolayer3(B, *ACK);
         //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
@@ -125,7 +125,7 @@ void B_input(struct pkt packet)
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq - 1;
         (*ACK).checksum = packet.seqnum;
-        tolayer3(BHOST, *ACK);
+        tolayer3(B, *ACK);
     }
 }
 
