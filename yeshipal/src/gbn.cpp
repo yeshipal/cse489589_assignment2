@@ -1,4 +1,5 @@
 #include "../include/simulator.h"
+#include "../include/common.h"
 #include <iostream>
 #include <vector>
 #include <string.h>
@@ -17,70 +18,25 @@
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
 #define RTT 25.0
-#define CHUNKSIZE 20
-#define BUFFER 1000
-#define AHOST 0
-#define BHOST 1
 
-using namespace std;
-
-int ackflag, aseq, bseq;
-int check = 0;
-int seq = 0;
-int lastsucess = 0;
-int numready = 0;
-int lastsequence = 0;
-vector<pkt> pkts;
-
-struct pkt last;
-int checksum(struct pkt);
-
-struct pkt *createPacket(struct msg message)
-{
-    struct pkt *packet = new struct pkt;
-    (*packet).seqnum = seq;
-    (*packet).acknum = seq;
-    strcpy((*packet).payload, message.data);
-    (*packet).checksum = checksum((*packet));
-    return packet;
-}
-
-int checksum(struct pkt packet)
-{
-    char data[CHUNKSIZE];
-    strcpy(data, packet.payload);
-    int localchecksum = 0;
-    int i = 0;
-    while(i < CHUNKSIZE && data[i] != '\0')
-    {
-        localchecksum += data[i];
-        i++;
-    }
-
-    localchecksum += packet.seqnum;
-    localchecksum += packet.acknum;
-
-    return localchecksum;   
-}
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
-    //cout << "Running A_Output..." << endl;
-    pkts.push_back(*createPacket(message));
+
+    packets.push_back(*createPacket(message));
     if(numready == 0)
     {
-        last = pkts.at(seq);
-        tolayer3(AHOST, last);
+        lastpkt = packets.at(seq);
+        tolayer3(AHOST, lastpkt);
         cout << seq << endl;
         seq++;
     starttimer(AHOST, RTT);
-    //cout << "A_Output timer start" << endl;
     numready++;
     }
     else if(numready < getwinsize())
     {
-        last = pkts.at(seq);
-        tolayer3(AHOST, last);
+        lastpkt = packets.at(seq);
+        tolayer3(AHOST, lastpkt);
         seq = seq + 1;
       numready++;
     }
@@ -89,9 +45,6 @@ void A_output(struct msg message)
 /* called from layer 3, when a packet arrives for layer 4 */
 void A_input(struct pkt packet)
 {
-    //cout << "Running A_input..." << endl;
-    //cout << "A Sequence value: " << aseq << endl;
-    //cout << "Packet acknum: " << packet.acknum << endl;
     ackflag = 1;
     //if(packet.acknum == aseq)
     //{
@@ -113,11 +66,11 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-    cout << "Running A_timerinterrupt..." << endl;
-    cout << "numready: " << numready << endl;
+    //cout << "Running A_timerinterrupt..." << endl;
+    //cout << "numready: " << numready << endl;
     for (int i = lastsequence; i < lastsequence + getwinsize() && i < numready; i++)
     {
-        last = pkts.at(i);
+        lastpkt = packets.at(i);
         tolayer3(AHOST, last);
     }
     starttimer(AHOST, RTT);

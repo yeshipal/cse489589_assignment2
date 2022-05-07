@@ -1,4 +1,5 @@
 #include "../include/simulator.h"
+#include "../include/common.h"
 #include <iostream>
 #include <string.h>
 #include <vector>
@@ -16,65 +17,22 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-#define CHUNKSIZE 20
-#define BUFFER 1000
-#define AHOST 0
-#define BHOST 1
 
-using namespace std;
-
-int ackflag, aseq, bseq;
-int check = 0;
-int seq = 0;
-int lastsucess = 0;
-int numready = 0;
-int lastsequence = 0;
-// Buffer
-vector<pkt> pkts;
 // Used for sim times
 vector<float> times;
 float timeout = 0.0;
 float RTT = 25.0;
 
-struct pkt last;
-int checksum(struct pkt);
 
-struct pkt *createPacket(struct msg message)
-{
-    struct pkt *packet = new struct pkt;
-    (*packet).seqnum = seq;
-    (*packet).acknum = seq;
-    strcpy((*packet).payload, message.data);
-    (*packet).checksum = checksum((*packet));
-    return packet;
-}
-
-int checksum(struct pkt packet)
-{
-    char data[CHUNKSIZE];
-    strcpy(data, packet.payload);
-    int localchecksum = 0;
-    int i = 0;
-    while(i < CHUNKSIZE && data[i] != '\0')
-    {
-        localchecksum += data[i];
-        i++;
-    }
-
-    localchecksum += packet.seqnum;
-    localchecksum += packet.acknum;
-
-    return localchecksum;   
-}
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
     //cout << "Running A_Output..." << endl;
-    pkts.push_back(*createPacket(message));
+    packets.push_back(*createPacket(message));
     if(numready == 0)
     {
-        last = pkts.at(seq);
-        tolayer3(AHOST, last);
+        lastpkt = packets.at(seq);
+        tolayer3(AHOST, lastpkt);
         times.push_back(get_sim_time());
         seq++;
         starttimer(AHOST, RTT);
@@ -83,8 +41,8 @@ void A_output(struct msg message)
     }
     else if(numready < getwinsize())
     {
-        last = pkts.at(seq);
-        tolayer3(AHOST, last);
+        lastpkt = packets.at(seq);
+        tolayer3(AHOST, lastpkt);
         seq = seq + 1;
         numready++;
     }
@@ -128,11 +86,11 @@ void A_timerinterrupt()
         timeout = get_sim_time() - times.at(i);
         if(timeout >= RTT)
         {
-            tolayer3(AHOST, last);
+            tolayer3(AHOST, lastpkt);
             starttimer(AHOST, RTT);
         }
     }
-    tolayer3(AHOST, last);
+    tolayer3(AHOST, lastpkt);
     starttimer(AHOST, RTT);
 }  
 /* the following routine will be called once (only) before any other */
