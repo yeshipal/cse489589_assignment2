@@ -71,7 +71,7 @@ void A_timerinterrupt()
     for (int i = lastsequence; i < lastsequence + getwinsize() && i < numready; i++)
     {
         lastpkt = packets.at(i);
-        tolayer3(AHOST, last);
+        tolayer3(AHOST, lastpkt);
     }
     starttimer(AHOST, RTT);
 }  
