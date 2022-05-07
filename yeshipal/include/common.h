@@ -1,4 +1,7 @@
 #include "../include/simulator.h"
+#include <iostream>
+#include <vector>
+#include <string.h>
 
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
