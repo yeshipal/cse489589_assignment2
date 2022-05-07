@@ -1,3 +1,4 @@
+#include "../include/simulator.h"
 
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
