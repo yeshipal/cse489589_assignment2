@@ -1,8 +1,8 @@
 #include "../include/simulator.h"
 #include "../include/common.h"
 #include <iostream>
-#include <vector>
 #include <string.h>
+#include <vector>
 
 /* ******************************************************************
  ALTERNATING BIT AND GO-BACK-N NETWORK EMULATOR: VERSION 1.1  J.F.Kurose
@@ -39,7 +39,6 @@ void A_output(struct msg message)
 /* called from layer 3, when a packet arrives for layer 4 */
 void A_input(struct pkt packet)
 {
-  
     if(packet.acknum == aseq)
     {
         ackflag = 1;
@@ -73,8 +72,6 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
- 
-  //int bleh = checksum(packet);
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         tolayer5(B, packet.payload);
@@ -82,12 +79,10 @@ void B_input(struct pkt packet)
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
         tolayer3(B, *ACK);
-        //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
     else if(bseq != packet.seqnum && checksum(packet) == packet.checksum)
     {
-
         pkt *ACK = new struct pkt;
         (*ACK).acknum = -1;
         (*ACK).checksum = packet.seqnum;

@@ -4,14 +4,13 @@
 #include <string.h>
 
 #define MSGSIZE 20
-#define BUFFERSIZE 1000
+//#define BUFFERSIZE 1000
 #define A 1
 #define B 0
 
 using namespace std;
 
 int ackflag, aseq, bseq;
-//int check = 0;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;
