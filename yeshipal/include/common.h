@@ -5,8 +5,8 @@
 
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
-#define A 0
-#define B 1
+#define A A
+#define B B
 
 using namespace std;
 
