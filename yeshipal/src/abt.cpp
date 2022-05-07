@@ -74,7 +74,7 @@ void A_init()
 void B_input(struct pkt packet)
 {
  
-  int bleh = checksum(packet);
+  //int bleh = checksum(packet);
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         tolayer5(B, packet.payload);

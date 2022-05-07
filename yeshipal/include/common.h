@@ -17,7 +17,8 @@ int lastsucess = 0;
 int numready = 0;
 int lastsequence = 0;
 vector<pkt> packets;
-
+float timeout = 0.0;
+float RTT = 25.0;
 struct pkt lastpkt;
 int checksum(struct pkt);
 

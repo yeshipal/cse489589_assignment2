@@ -20,8 +20,7 @@
 
 // Used for sim times
 vector<float> times;
-float timeout = 0.0;
-float RTT = 25.0;
+
 
 
 /* called from layer 5, passed the data to be sent to other side */
