@@ -45,7 +45,7 @@ void A_output(struct msg message)
 /* called from layer 3, when a packet arrives for layer 4 */
 void A_input(struct pkt packet)
 {
-    ackflag = 1;
+    ack = 1;
     if(packet.acknum == lastsequence + 1)
     {
       lastsequence++;
@@ -73,7 +73,7 @@ void A_timerinterrupt()
 /* entity A routines are called. You can use it to do any initialization */
 void A_init()
 {
-    ackflag = 1;
+    ack = 1;
     a_seq = 0;
 }
 

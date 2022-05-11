@@ -26,9 +26,9 @@ void A_output(struct msg message)
   
   packets.push_back(*createPacket(message));
     seq++;
-    if(ackflag == 1)
+    if(ack == 1)
     {
-        ackflag = 0;
+        ack = 0;
         lastpkt = packets.at(a_seq);
         int blah = checksum(lastpkt);
         tolayer3(AHOST, lastpkt);
@@ -42,7 +42,7 @@ void A_input(struct pkt packet)
   
     if(packet.acknum == a_seq)
     {
-        ackflag = 1;
+        ack = 1;
         stoptimer(AHOST);
         a_seq++;
     }
@@ -64,7 +64,7 @@ void A_timerinterrupt()
 /* entity A routines are called. You can use it to do any initialization */
 void A_init()
 {
-    ackflag = 1;
+    ack = 1;
     a_seq = 0;
 }
 
@@ -74,7 +74,7 @@ void A_init()
 void B_input(struct pkt packet)
 {
  
-  int bleh = checksum(packet);
+  int check = checksum(packet);
     if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         tolayer5(BHOST, packet.payload);
