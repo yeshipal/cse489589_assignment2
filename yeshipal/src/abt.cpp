@@ -46,7 +46,7 @@ void A_input(struct pkt packet)
         stoptimer(AHOST);
         a_seq++;
     }
-    else if
+    else 
     {
         starttimer(AHOST, RTT);
         tolayer3(AHOST, lastpkt);
