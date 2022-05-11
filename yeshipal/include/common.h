@@ -34,12 +34,13 @@ int checksum(struct pkt packet_to_send)
 {
     char data[MSGSIZE];
     int sum = 0;
-
+    int i = 0;
     strcpy(data, packet_to_send.payload);
     
-    while(int i = 0; i < MSGSIZE && data[i] != '\0'; i++)
+    while(i < MSGSIZE && data[i] != '\0')
     {
         sum += data[i];
+        i++;
     }
 
     sum += packet_to_send.seqnum;
