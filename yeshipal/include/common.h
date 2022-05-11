@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
 #define AHOST 0
@@ -11,6 +10,7 @@
 using namespace std;
 
 int ackflag, aseq, bseq;
+//int check = 0;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;
@@ -33,18 +33,18 @@ struct pkt *createPacket(struct msg message)
 int checksum(struct pkt packet)
 {
     char data[MSGSIZE];
-    int sum = 0;
-    int i = 0;
     strcpy(data, packet.payload);
+    int localchecksum = 0;
+    int i = 0;
     while(i < MSGSIZE && data[i] != '\0')
     {
-        sum += data[i];
+        localchecksum += data[i];
         i++;
     }
 
-    sum += packet.seqnum;
-    sum += packet.acknum;
+    localchecksum += packet.seqnum;
+    localchecksum += packet.acknum;
 
-    return sum;   
+    return localchecksum;   
 }
 

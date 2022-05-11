@@ -46,12 +46,17 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
     ackflag = 1;
+    //if(packet.acknum == aseq)
+    //{
     if(packet.acknum == lastsequence + 1)
     {
       lastsequence++;
+        //cout << "Packet acknum: " << packet.acknum << endl; 
     }
   else if(packet.acknum == lastsucess + getwinsize())
   {
+        //cout << "BALH" << endl;
+        //cout << endl;
         lastsucess += getwinsize();
         stoptimer(AHOST);
         numready = 0;
@@ -61,6 +66,8 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
+    //cout << "Running A_timerinterrupt..." << endl;
+    //cout << "numready: " << numready << endl;
     for (int i = lastsequence; i < lastsequence + getwinsize() && i < numready; i++)
     {
         lastpkt = packets.at(i);
@@ -82,14 +89,19 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
+    //cout << "Running B_Input..." << endl;
+    //cout << "B INPUT PACKET: " <<packet.acknum << endl;
+    //int bleh = checksum(packet);
+    //cout << "Checksum from B_Input: " << bleh << endl;
     if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
     {
-        
+        //cout << "Worked for both equal" << endl;
         tolayer5(BHOST, packet.payload);
         pkt *ACK = new struct pkt;
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
+        //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
     else if(bseq != packet.seqnum && checksum(packet) == packet.checksum)
