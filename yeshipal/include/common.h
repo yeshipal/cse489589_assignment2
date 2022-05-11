@@ -18,7 +18,7 @@ int lastsequence = 0;
 vector<pkt> packets;
 
 struct pkt lastpkt;
-//int checksum(struct pkt);
+int checksum(struct pkt);
 
 struct pkt *createPacket(struct msg message)
 {
