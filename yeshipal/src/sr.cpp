@@ -45,8 +45,8 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
   ack = 1;
-  int a = packet.acknum == nextseq + 1;
-  int b = packet.acknum == previous + getwinsize();
+  int a = nextseq + 1;
+  int b = previous + getwinsize();
   int id = packet.acknum;
   switch(packet.acknum){
     case a: nextseq++;
