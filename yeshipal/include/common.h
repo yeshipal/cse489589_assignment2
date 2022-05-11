@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int ackflag, aseq, bseq;
+int ackflag, a_seq, b_seq;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;

@@ -80,7 +80,7 @@ void A_timerinterrupt()
 void A_init()
 {
     ackflag = 1;
-    aseq = 0;
+    a_seq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */
@@ -88,20 +88,20 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
-    if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
+    if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         
         tolayer5(BHOST, packet.payload);
         pkt *ACK = new struct pkt;
-        (*ACK).acknum = bseq;
+        (*ACK).acknum = b_seq;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
-        bseq++;
+        b_seq++;
     }
-    else if(bseq != packet.seqnum && checksum(packet) == packet.checksum)
+    else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
     {
         pkt *ACK = new struct pkt;
-        (*ACK).acknum = bseq - 1;
+        (*ACK).acknum = b_seq - 1;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
     }
@@ -111,5 +111,5 @@ void B_input(struct pkt packet)
 /* entity B routines are called. You can use it to do any initialization */
 void B_init()
 {
-    bseq = 0;
+    b_seq = 0;
 }
