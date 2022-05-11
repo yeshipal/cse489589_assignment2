@@ -23,8 +23,9 @@
 void A_output(struct msg message)
 {
   packets.push_back(*createPacket(message));
+  int a = getwinsize();
   switch(base){
-    case base == 0:
+    case 0:
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
@@ -33,7 +34,7 @@ void A_output(struct msg message)
     seq++;
     base++;
   }
-    case base < getwinsize():
+    case < a:
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
