@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int ackflag, a_seq, b_seq;
+int ackflag, aseq, bseq;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;
@@ -30,21 +30,20 @@ struct pkt *createPacket(struct msg message)
     return packet;
 }
 
-int checksum(struct pkt packet_to_send)
+int checksum(struct pkt packet)
 {
     char data[MSGSIZE];
     int sum = 0;
     int i = 0;
-    strcpy(data, packet_to_send.payload);
-    
+    strcpy(data, packet.payload);
     while(i < MSGSIZE && data[i] != '\0')
     {
         sum += data[i];
         i++;
     }
 
-    sum += packet_to_send.seqnum;
-    sum += packet_to_send.acknum;
+    sum += packet.seqnum;
+    sum += packet.acknum;
 
     return sum;   
 }
