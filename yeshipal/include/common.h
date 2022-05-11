@@ -9,7 +9,7 @@ using namespace std;
 
 int ack, a_seq, b_seq;
 int seq = 0;
-int lastsucess = 0;
+int previous;
 int base = 0;
 int lastsequence = 0;
 vector<pkt> packets;

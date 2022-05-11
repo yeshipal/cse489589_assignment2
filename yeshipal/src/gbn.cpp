@@ -74,6 +74,7 @@ void A_init()
 {
     ack = 1;
     timeout = 25.0;
+    previous = 0;
     a_seq = 0;
 }
 
