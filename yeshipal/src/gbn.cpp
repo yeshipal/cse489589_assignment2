@@ -22,7 +22,6 @@
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
-
   packets.push_back(*createPacket(message));
   if(base == 0)
   {

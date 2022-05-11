@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int ack, a_seq, b_seq;
+int a_seq, b_seq, ack;
 int seq;
 int previous;
 int base;
