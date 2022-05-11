@@ -12,7 +12,7 @@ using namespace std;
 int ack, a_seq, b_seq;
 int seq = 0;
 int lastsucess = 0;
-int numready = 0;
+int base = 0;
 int lastsequence = 0;
 vector<pkt> packets;
 
@@ -23,7 +23,7 @@ struct pkt *createPacket(struct msg message)
 {
     struct pkt *packet = new struct pkt;
     (*packet).seqnum = seq;
-    (*packet).acknum = seq;
+    (*packet).acknum = 0;
     strcpy((*packet).payload, message.data);
     (*packet).checksum = checksum((*packet));
     return packet;

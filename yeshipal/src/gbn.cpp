@@ -24,21 +24,21 @@ void A_output(struct msg message)
 {
 
     packets.push_back(*createPacket(message));
-    if(numready == 0)
+    if(base == 0)
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
         cout << seq << endl;
         seq++;
     starttimer(AHOST, RTT);
-    numready++;
+    base++;
     }
-    else if(numready < getwinsize())
+    else if(base < getwinsize())
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
         seq = seq + 1;
-      numready++;
+      base++;
     }
 }
 
@@ -54,14 +54,14 @@ void A_input(struct pkt packet)
   {
         lastsucess += getwinsize();
         stoptimer(AHOST);
-        numready = 0;
+        base = 0;
   }
 }
 
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-    for (int i = lastsequence; i < lastsequence + getwinsize() && i < numready; i++)
+    for (int i = lastsequence; i < lastsequence + getwinsize() && i < base; i++)
     {
         lastpkt = packets.at(i);
         tolayer3(AHOST, lastpkt);

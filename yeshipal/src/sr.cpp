@@ -27,21 +27,21 @@ vector<float> times;
 void A_output(struct msg message)
 {
     packets.push_back(*createPacket(message));
-    if(numready == 0)
+    if(base == 0)
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
         times.push_back(get_sim_time());
         seq++;
         starttimer(AHOST, RTT);
-        numready++;
+        base++;
     }
-    else if(numready < getwinsize())
+    else if(base < getwinsize())
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
         seq = seq + 1;
-        numready++;
+        base++;
     }
 }
 
