@@ -31,7 +31,7 @@ struct pkt *createPacket(struct msg message)
 
 int checksum(struct pkt packet_to_send)
 {
-    char data[MSGSIZE];
+    /*char data[MSGSIZE];
     strcpy(data, packet_to_send.payload);
     int sum = 0;
     int i = 0;
@@ -44,6 +44,23 @@ int checksum(struct pkt packet_to_send)
     sum += packet_to_send.seqnum;
     sum += packet_to_send.acknum;
 
-    return sum;   
+    return sum;   */
+    char msg_cpy[MSGSIZE];
+    int i = 0;
+    while(i<MSGSIZE)
+    {
+      msg_cpy[i] = packet_to_send.payload[i];
+      i++;
+    }
+    strcpy(packet_to_send.payload, msg_cpy);
+    int sum = 0;
+    for(int i = 0; i<MSGSIZE && msg_cpy[i] != '\0'; i++){
+      sum += msg_cpy[i];
+    }
+    sum = sum + packet_to_send.seqnum;
+    sum = sum + packet_to_send.acknum;
+    for (int i = 0; i < sizeof(msg_cpy); i++)
+        msg_cpy[i] = '\0';
+    return sum;
 }
 
