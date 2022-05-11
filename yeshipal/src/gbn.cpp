@@ -61,8 +61,9 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {   
+    int last = lastsequence + getwinsize();
     int i = lastsequence;
-    while ( i < lastsequence + getwinsize() && i < base)
+    while ( i < last && i < lastsequence)
     {
         lastpkt = packets.at(i);
         tolayer3(AHOST, lastpkt);
