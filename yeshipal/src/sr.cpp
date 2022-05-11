@@ -44,9 +44,9 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
     ack = 1;
-    if(packet.acknum == lastsequence + 1)
+    if(packet.acknum == nextseq + 1)
     {
-        lastsequence++;
+        nextseq++;
     }
     else if(packet.acknum == previous + getwinsize())
     {
@@ -78,6 +78,7 @@ void A_init()
     RTT = 25.0;
     timeout = 0.0;
     a_seq = 0;
+    seq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */

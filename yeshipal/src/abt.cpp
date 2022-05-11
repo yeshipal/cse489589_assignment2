@@ -66,6 +66,7 @@ void A_init()
     ack = 1;
     timeout = 20.0;
     a_seq = 0;
+    seq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */

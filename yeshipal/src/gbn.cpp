@@ -45,9 +45,9 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
     ack = 1;
-    if(packet.acknum == lastsequence + 1)
+    if(packet.acknum == nextseq + 1)
     {
-      lastsequence++;
+      nextseq++;
     }
   else if(packet.acknum == previous + getwinsize())
   {
@@ -60,7 +60,7 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-    for (int i = lastsequence; i < lastsequence + getwinsize() && i < base; i++)
+    for (int i = nextseq; i < nextseq + getwinsize() && i < base; i++)
     {
         next_packet = packets.at(i);
         tolayer3(0, next_packet);
@@ -76,6 +76,7 @@ void A_init()
     timeout = 25.0;
     previous = 0;
     a_seq = 0;
+    seq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */

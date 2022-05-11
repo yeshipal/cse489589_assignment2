@@ -8,10 +8,10 @@
 using namespace std;
 
 int ack, a_seq, b_seq;
-int seq = 0;
+int seq;
 int previous;
 int base = 0;
-int lastsequence = 0;
+int nextseq = 0;
 vector<pkt> packets;
 float RTT;
 float timeout;
