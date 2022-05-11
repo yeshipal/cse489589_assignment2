@@ -33,7 +33,7 @@ void A_output(struct msg message)
     starttimer(AHOST, RTT);
     base++;
     }
-    else if(base < getwinsize())
+    if(base < getwinsize())
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
@@ -50,12 +50,12 @@ void A_input(struct pkt packet)
     {
       lastsequence++;
     }
-  else if(packet.acknum == lastsucess + getwinsize())
-  {
+    if(packet.acknum == lastsucess + getwinsize())
+    {
         lastsucess += getwinsize();
         stoptimer(AHOST);
         base = 0;
-  }
+    }
 }
 
 /* called when A's timer goes off */
