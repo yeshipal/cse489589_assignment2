@@ -17,7 +17,6 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-//float timeout;
 
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
@@ -26,8 +25,8 @@ void A_output(struct msg message)
     packets.push_back(*createPacket(message));
     if(base == 0)
     {
-        lastpkt = packets.at(seq);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(seq);
+        tolayer3(0, next_packet);
         cout << seq << endl;
         seq++;
     starttimer(0, timeout);
@@ -35,8 +34,8 @@ void A_output(struct msg message)
     }
     else if(base < getwinsize())
     {
-        lastpkt = packets.at(seq);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(seq);
+        tolayer3(0, next_packet);
         seq = seq + 1;
       base++;
     }
@@ -50,9 +49,9 @@ void A_input(struct pkt packet)
     {
       lastsequence++;
     }
-  else if(packet.acknum == lastsucess + getwinsize())
+  else if(packet.acknum == previous + getwinsize())
   {
-        lastsucess += getwinsize();
+        previous += getwinsize();
         stoptimer(0);
         base = 0;
   }
@@ -63,8 +62,8 @@ void A_timerinterrupt()
 {
     for (int i = lastsequence; i < lastsequence + getwinsize() && i < base; i++)
     {
-        lastpkt = packets.at(i);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(i);
+        tolayer3(0, next_packet);
     }
     starttimer(0, timeout);
 }  

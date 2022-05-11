@@ -16,7 +16,7 @@ vector<pkt> packets;
 float RTT;
 float timeout;
 vector<float> times;
-struct pkt lastpkt;
+struct pkt next_packet;
 int checksum(struct pkt);
 
 struct pkt *createPacket(struct msg message)

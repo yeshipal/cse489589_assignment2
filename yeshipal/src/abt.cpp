@@ -18,7 +18,6 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-//float timeout;
 
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
@@ -29,9 +28,9 @@ void A_output(struct msg message)
     if(ack == 1)
     {
         ack = 0;
-        lastpkt = packets.at(a_seq);
-        int check = checksum(lastpkt);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(a_seq);
+        int check = checksum(next_packet);
+        tolayer3(0, next_packet);
         starttimer(0, timeout);
     }
 }
@@ -49,7 +48,7 @@ void A_input(struct pkt packet)
     else 
     {
         starttimer(0, timeout);
-        tolayer3(0, lastpkt);
+        tolayer3(0, next_packet);
     }
 }
 
@@ -57,7 +56,7 @@ void A_input(struct pkt packet)
 void A_timerinterrupt()
 {
     starttimer(0, timeout);
-    tolayer3(0, lastpkt);
+    tolayer3(0, next_packet);
 }  
 
 /* the following routine will be called once (only) before any other */

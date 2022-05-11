@@ -18,17 +18,14 @@
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
 
-
-
-
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
     packets.push_back(*createPacket(message));
     if(base == 0)
     {
-        lastpkt = packets.at(seq);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(seq);
+        tolayer3(0, next_packet);
         times.push_back(get_sim_time());
         seq++;
         starttimer(0, RTT);
@@ -36,8 +33,8 @@ void A_output(struct msg message)
     }
     else if(base < getwinsize())
     {
-        lastpkt = packets.at(seq);
-        tolayer3(0, lastpkt);
+        next_packet = packets.at(seq);
+        tolayer3(0, next_packet);
         seq = seq + 1;
         base++;
     }
@@ -51,9 +48,9 @@ void A_input(struct pkt packet)
     {
         lastsequence++;
     }
-    else if(packet.acknum == lastsucess + getwinsize())
+    else if(packet.acknum == previous + getwinsize())
     {
-        lastsucess += getwinsize();
+        previous += getwinsize();
         stoptimer(0);
     }
 }
@@ -66,11 +63,11 @@ void A_timerinterrupt()
         timeout = get_sim_time() - times.at(i);
         if(timeout >= RTT)
         {
-            tolayer3(0, lastpkt);
+            tolayer3(0, next_packet);
             starttimer(0, RTT);
         }
     }
-    tolayer3(0, lastpkt);
+    tolayer3(0, next_packet);
     starttimer(0, RTT);
 }  
 /* the following routine will be called once (only) before any other */
