@@ -34,7 +34,7 @@ void A_output(struct msg message)
     seq++;
     base++;
   }
-    case < a:
+    case base < a:
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
@@ -43,6 +43,7 @@ void A_output(struct msg message)
   }
     default:
     break;
+  }
 }
 
 /* called from layer 3, when a packet arrives for layer 4 */
