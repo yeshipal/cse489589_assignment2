@@ -48,7 +48,7 @@ void A_input(struct pkt packet)
   int a = nextseq + 1;
   int b = previous + getwinsize();
   int id = packet.acknum;
-  switch(packet.acknum){
+  switch(id){
     case a: nextseq++;
     case b: 
             previous += getwinsize();
