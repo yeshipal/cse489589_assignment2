@@ -50,21 +50,23 @@ void A_input(struct pkt packet)
     {
       lastsequence++;
     }
-  else if(packet.acknum == lastsucess + getwinsize())
-  {
+    if(packet.acknum == lastsucess + getwinsize())
+    {
         lastsucess += getwinsize();
         stoptimer(AHOST);
         base = 0;
-  }
+    }
 }
 
 /* called when A's timer goes off */
 void A_timerinterrupt()
-{
-    for (int i = lastsequence; i < lastsequence + getwinsize() && i < base; i++)
+{   
+    int i = lastsequence;
+    while ( i < lastsequence + getwinsize() && i < base)
     {
         lastpkt = packets.at(i);
         tolayer3(AHOST, lastpkt);
+        i++;
     }
     starttimer(AHOST, RTT);
 }  
