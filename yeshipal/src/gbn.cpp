@@ -17,7 +17,7 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-float timeout;
+//float timeout;
 
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
