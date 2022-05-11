@@ -1,3 +1,4 @@
+
 #include "../include/simulator.h"
 #include <iostream>
 #include <vector>
@@ -15,7 +16,7 @@ int nextseq;
 vector<pkt> packets;
 float RTT;
 float timeout;
-vector<float> times;
+vector<float> timevector;
 struct pkt next_packet;
 int checksum(struct pkt);
 
