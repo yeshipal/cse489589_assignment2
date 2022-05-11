@@ -17,7 +17,7 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-#define RTT 25.0
+float timeout;
 
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
@@ -30,7 +30,7 @@ void A_output(struct msg message)
         tolayer3(0, lastpkt);
         cout << seq << endl;
         seq++;
-    starttimer(0, RTT);
+    starttimer(0, timeout);
     base++;
     }
     else if(base < getwinsize())
@@ -66,7 +66,7 @@ void A_timerinterrupt()
         lastpkt = packets.at(i);
         tolayer3(0, lastpkt);
     }
-    starttimer(0, RTT);
+    starttimer(0, timeout);
 }  
 
 /* the following routine will be called once (only) before any other */
@@ -74,6 +74,7 @@ void A_timerinterrupt()
 void A_init()
 {
     ack = 1;
+    timeout = 25.0;
     a_seq = 0;
 }
 
