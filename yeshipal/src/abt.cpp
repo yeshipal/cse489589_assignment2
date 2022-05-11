@@ -18,7 +18,7 @@
 **********************************************************************/
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
-#define RTT 20.0
+float timeout;
 
 /* called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
@@ -32,7 +32,7 @@ void A_output(struct msg message)
         lastpkt = packets.at(a_seq);
         int check = checksum(lastpkt);
         tolayer3(0, lastpkt);
-        starttimer(0, RTT);
+        starttimer(0, timeout);
     }
 }
 
@@ -48,7 +48,7 @@ void A_input(struct pkt packet)
     }
     else 
     {
-        starttimer(0, RTT);
+        starttimer(0, timeout);
         tolayer3(0, lastpkt);
     }
 }
@@ -56,7 +56,7 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-    starttimer(0, RTT);
+    starttimer(0, timeout);
     tolayer3(0, lastpkt);
 }  
 
@@ -65,6 +65,7 @@ void A_timerinterrupt()
 void A_init()
 {
     ack = 1;
+    timeout = 20.0;
     a_seq = 0;
 }
 
