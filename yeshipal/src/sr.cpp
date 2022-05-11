@@ -23,9 +23,7 @@
 void A_output(struct msg message)
 {
   packets.push_back(*createPacket(message));
-  int a = getwinsize();
-  switch(base){
-    case 0:
+  if(base == 0)
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
@@ -34,15 +32,12 @@ void A_output(struct msg message)
     seq++;
     base++;
   }
-    case base < a:
+  else if(base < getwinsize())
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
     base++;
     seq += 1;
-  }
-    default:
-    break;
   }
 }
 
@@ -50,6 +45,18 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
   ack = 1;
+  int a = packet.acknum == nextseq + 1;
+  int b = packet.acknum == previous + getwinsize();
+  int id = packet.acknum;
+  switch(packet.acknum){
+    case a: nextseq++;
+    case b: 
+            previous += getwinsize();
+            stoptimer(0);
+    default:
+    break;
+  }
+  /*
   if(packet.acknum == nextseq + 1)
   {
     nextseq++;
@@ -58,7 +65,7 @@ void A_input(struct pkt packet)
   {
     previous += getwinsize();
     stoptimer(0);
-  }
+  }*/
 }
 
 /* called when A's timer goes off */
