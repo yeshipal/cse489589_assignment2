@@ -77,6 +77,8 @@ void A_init()
     previous = 0;
     a_seq = 0;
     seq = 0;
+    base = 0;
+    nextseq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */
