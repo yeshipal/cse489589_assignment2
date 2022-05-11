@@ -30,7 +30,7 @@ void A_output(struct msg message)
     {
         ack = 0;
         lastpkt = packets.at(a_seq);
-        int blah = checksum(lastpkt);
+        int check = checksum(lastpkt);
         tolayer3(0, lastpkt);
         starttimer(0, RTT);
     }

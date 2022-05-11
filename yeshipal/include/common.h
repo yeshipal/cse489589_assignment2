@@ -4,8 +4,6 @@
 #include <string.h>
 #define MSGSIZE 20
 #define BUFFERSIZE 1000
-//#define AHOST 0
-//#define BHOST 1
 
 using namespace std;
 
