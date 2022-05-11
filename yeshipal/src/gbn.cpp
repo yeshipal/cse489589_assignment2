@@ -33,7 +33,7 @@ void A_output(struct msg message)
     starttimer(AHOST, RTT);
     base++;
     }
-    else if(base < getwinsize())
+    else(base < getwinsize())
     {
         lastpkt = packets.at(seq);
         tolayer3(AHOST, lastpkt);
