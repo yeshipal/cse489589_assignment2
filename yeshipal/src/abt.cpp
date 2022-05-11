@@ -46,7 +46,7 @@ void A_input(struct pkt packet)
         stoptimer(AHOST);
         a_seq++;
     }
-    else
+    else if
     {
         starttimer(AHOST, RTT);
         tolayer3(AHOST, lastpkt);
@@ -84,7 +84,7 @@ void B_input(struct pkt packet)
         tolayer3(BHOST, *ACK);
         b_seq++;
     }
-    if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
+    else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
     {
 
         pkt *ACK = new struct pkt;
