@@ -88,7 +88,25 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
-    if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
+  switch (b_seq && checksum(packet)){
+    case b_seq == packet.seqnum && checksum(packet) == packet.checksum:
+        tolayer5(BHOST, packet.payload);
+        pkt *ACK = new struct pkt;
+        (*ACK).acknum = b_seq;
+        (*ACK).checksum = packet.seqnum;
+        tolayer3(BHOST, *ACK);
+        b_seq++;
+        break;
+    case b_seq != packet.seqnum && checksum(packet) == packet.checksum:
+        pkt *ACK = new struct pkt;
+        (*ACK).acknum = b_seq - 1;
+        (*ACK).checksum = packet.seqnum;
+        tolayer3(BHOST, *ACK);
+        break;
+    default:
+        break;
+  }
+   /* if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         
         tolayer5(BHOST, packet.payload);
@@ -104,7 +122,7 @@ void B_input(struct pkt packet)
         (*ACK).acknum = b_seq - 1;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
-    }
+    }*/
 }
 
 /* the following rouytine will be called once (only) before any other */
