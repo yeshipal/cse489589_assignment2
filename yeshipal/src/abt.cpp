@@ -30,7 +30,6 @@ void A_output(struct msg message)
   {
     ack = 0;
     next_packet = packets.at(a_seq);
-    //int check = checksum(next_packet);
     tolayer3(0, next_packet);
     starttimer(0, timeout);
   }
@@ -75,9 +74,7 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
- 
-  //int check = checksum(packet);
-  
+   
   if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
     {
       tolayer5(1, packet.payload);

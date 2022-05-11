@@ -23,22 +23,25 @@
 void A_output(struct msg message)
 {
   packets.push_back(*createPacket(message));
-  if(base == 0)
+  switch(base){
+    case base == 0:
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
     timevector.push_back(get_sim_time());
-    seq++;
     starttimer(0, RTT);
+    seq++;
     base++;
   }
-  else if(base < getwinsize())
+    case base < getwinsize():
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
     base++;
     seq += 1;
   }
+    default:
+    break;
 }
 
 /* called from layer 3, when a packet arrives for layer 4 */
