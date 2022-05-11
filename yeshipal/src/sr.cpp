@@ -48,7 +48,9 @@ void A_input(struct pkt packet)
   int a = nextseq + 1;
   int b = previous + getwinsize();
   int id = packet.acknum;
-  switch(id){
+  cout << a;
+  cout << b;
+  /*switch(id){
     case a: nextseq++;
     case b: 
             previous += getwinsize();
@@ -56,7 +58,7 @@ void A_input(struct pkt packet)
     default:
     break;
   }
-  /*
+  */
   if(packet.acknum == nextseq + 1)
   {
     nextseq++;
@@ -65,7 +67,7 @@ void A_input(struct pkt packet)
   {
     previous += getwinsize();
     stoptimer(0);
-  }*/
+  }
 }
 
 /* called when A's timer goes off */
