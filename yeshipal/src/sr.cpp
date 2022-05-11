@@ -18,8 +18,8 @@
 
 /********* STUDENTS WRITE THE NEXT SEVEN ROUTINES *********/
 
-float RTT = 25.0;
-float timeout = 0.0;
+float RTT;
+float timeout;
 vector<float> times;
 
 
@@ -80,6 +80,8 @@ void A_timerinterrupt()
 void A_init()
 {
     ack = 1;
+    RTT = 25.0;
+    timeout = 0.0;
     a_seq = 0;
 }
 
