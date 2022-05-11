@@ -29,15 +29,15 @@ void A_output(struct msg message)
         tolayer3(0, next_packet);
         cout << seq << endl;
         seq++;
-    starttimer(0, timeout);
-    base++;
+        starttimer(0, timeout);
+        base++;
     }
     else if(base < getwinsize())
     {
         next_packet = packets.at(seq);
         tolayer3(0, next_packet);
         seq = seq + 1;
-      base++;
+        base++;
     }
 }
 
@@ -51,9 +51,9 @@ void A_input(struct pkt packet)
     }
   else if(packet.acknum == previous + getwinsize())
   {
-        previous += getwinsize();
-        stoptimer(0);
-        base = 0;
+      previous += getwinsize();
+      stoptimer(0);
+      base = 0;
   }
 }
 
@@ -62,9 +62,10 @@ void A_timerinterrupt()
 {
     for (int i = nextseq; i < nextseq + getwinsize() && i < base; i++)
     {
-        next_packet = packets.at(i);
-        tolayer3(0, next_packet);
+      next_packet = packets.at(i);
+      tolayer3(0, next_packet);
     }
+    
     starttimer(0, timeout);
 }  
 
