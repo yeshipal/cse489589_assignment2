@@ -36,7 +36,7 @@ void A_output(struct msg message)
         starttimer(0, RTT);
         base++;
     }
-    if(base < getwinsize())
+    else if(base < getwinsize())
     {
         lastpkt = packets.at(seq);
         tolayer3(0, lastpkt);
@@ -53,7 +53,7 @@ void A_input(struct pkt packet)
     {
         lastsequence++;
     }
-    if(packet.acknum == lastsucess + getwinsize())
+    else if(packet.acknum == lastsucess + getwinsize())
     {
         lastsucess += getwinsize();
         stoptimer(0);
@@ -98,7 +98,7 @@ void B_input(struct pkt packet)
         tolayer3(1, *ACK);
         b_seq++;
     }
-    if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
+    else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
     {
         pkt *ACK = new struct pkt;
         (*ACK).acknum = b_seq - 1;
