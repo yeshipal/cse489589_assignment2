@@ -29,7 +29,7 @@ void A_output(struct msg message)
     if(ackflag == 1)
     {
         ackflag = 0;
-        lastpkt = packets.at(aseq);
+        lastpkt = packets.at(a_seq);
         int blah = checksum(lastpkt);
         tolayer3(AHOST, lastpkt);
         starttimer(AHOST, RTT);
@@ -40,11 +40,11 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
   
-    if(packet.acknum == aseq)
+    if(packet.acknum == a_seq)
     {
         ackflag = 1;
         stoptimer(AHOST);
-        aseq++;
+        a_seq++;
     }
     else
     {
@@ -65,7 +65,7 @@ void A_timerinterrupt()
 void A_init()
 {
     ackflag = 1;
-    aseq = 0;
+    a_seq = 0;
 }
 
 /* Note that with simplex transfer from a-to-B, there is no B_output() */
@@ -75,17 +75,16 @@ void B_input(struct pkt packet)
 {
  
   int bleh = checksum(packet);
-    if(bseq == packet.seqnum && checksum(packet) == packet.checksum)
+    if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
     {
         tolayer5(BHOST, packet.payload);
         pkt *ACK = new struct pkt;
-        (*ACK).acknum = bseq;
+        (*ACK).acknum = b_seq;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
-        //cout << "ACK Checksum: " << checksum(packet) << endl;
-        bseq++;
+        b_seq++;
     }
-    else if(bseq != packet.seqnum && checksum(packet) == packet.checksum)
+    else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
     {
 
         pkt *ACK = new struct pkt;
@@ -99,5 +98,5 @@ void B_input(struct pkt packet)
 /* entity B routines are called. You can use it to do any initialization */
 void B_init()
 {
-    bseq = 0;
+    b_seq = 0;
 }
