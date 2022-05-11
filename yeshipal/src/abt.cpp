@@ -82,7 +82,6 @@ void B_input(struct pkt packet)
         (*ACK).acknum = bseq;
         (*ACK).checksum = packet.seqnum;
         tolayer3(BHOST, *ACK);
-        //cout << "ACK Checksum: " << checksum(packet) << endl;
         bseq++;
     }
     else if(bseq != packet.seqnum && checksum(packet) == packet.checksum)

@@ -10,7 +10,6 @@
 using namespace std;
 
 int ackflag, aseq, bseq;
-//int check = 0;
 int seq = 0;
 int lastsucess = 0;
 int numready = 0;
