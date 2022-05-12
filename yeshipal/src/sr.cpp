@@ -64,7 +64,7 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-  for (int i = 0; i < timevector.size(); i++)
+  for (int i = 0; i < sizeof(timevector); i++)
   {
     timeout = get_sim_time() - timevector.at(i);
     
