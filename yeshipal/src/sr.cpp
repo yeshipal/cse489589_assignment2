@@ -46,8 +46,9 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
   ack = 1;
+  int winsize = getwinsize();
   int a = nextseq + 1;
-  int b = previous + getwinsize();
+  int b = previous + winsize;
   int id = packet.acknum;
   cout << a;
   cout << b;
@@ -57,7 +58,7 @@ void A_input(struct pkt packet)
   }
   else if(id == b)
   {
-    previous += getwinsize();
+    previous += winsize;
     stoptimer(0);
   }
 }
