@@ -50,20 +50,11 @@ void A_input(struct pkt packet)
   int id = packet.acknum;
   cout << a;
   cout << b;
-  /*switch(id){
-    case a: nextseq++;
-    case b: 
-            previous += getwinsize();
-            stoptimer(0);
-    default:
-    break;
-  }
-  */
-  if(packet.acknum == nextseq + 1)
+  if(id == a)
   {
     nextseq++;
   }
-  else if(packet.acknum == previous + getwinsize())
+  else if(id == b)
   {
     previous += getwinsize();
     stoptimer(0);
@@ -104,7 +95,10 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
- if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
+
+  int a = packet.seqnum;
+  int check = packet.checksum;
+  if(b_seq == a && checksum(packet) == check)
   {
     tolayer5(1, packet.payload);
     pkt *ACK = new struct pkt;
@@ -113,7 +107,7 @@ void B_input(struct pkt packet)
     tolayer3(1, *ACK);
     b_seq++;
   }
-  else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
+  else if(b_seq != a && checksum(packet) == check)
   {
     pkt *ACK = new struct pkt;
     (*ACK).acknum = b_seq - 1;
