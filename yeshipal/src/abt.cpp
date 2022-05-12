@@ -55,8 +55,9 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-  starttimer(0, timeout);
   tolayer3(0, next_packet);
+  starttimer(0, timeout);
+
 }  
 
 /* the following routine will be called once (only) before any other */
@@ -74,8 +75,10 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
-   
-  if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
+  int a = packet.seqnum;
+  int check = packet.checksum;
+  int check_verify = checksum(packet);
+  if(b_seq == a && check_verify == check)
     {
       tolayer5(1, packet.payload);
       pkt *ACK = new struct pkt;
@@ -85,7 +88,7 @@ void B_input(struct pkt packet)
       b_seq++;
     }
 
-    else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
+    else if(b_seq != a && check_verify == check)
     {
 
       pkt *ACK = new struct pkt;

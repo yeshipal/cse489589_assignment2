@@ -23,6 +23,7 @@
 void A_output(struct msg message)
 {
   packets.push_back(*createPacket(message));
+  int winsize = getwinsize();
   if(base == 0)
   {
     next_packet = packets.at(seq);
@@ -32,7 +33,7 @@ void A_output(struct msg message)
     seq++;
     base++;
   }
-  else if(base < getwinsize())
+  else if(base < winsize())
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
@@ -64,7 +65,7 @@ void A_input(struct pkt packet)
 /* called when A's timer goes off */
 void A_timerinterrupt()
 {
-  for (int i = 0; i < sizeof(timevector); i++)
+  for (int i = 0; i < timevector.size(); i++)
   {
     timeout = get_sim_time() - timevector.at(i);
     

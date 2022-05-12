@@ -23,6 +23,7 @@
 void A_output(struct msg message)
 {
   packets.push_back(*createPacket(message));
+  int winsize = getwinsize();
   if(base == 0)
   {
     next_packet = packets.at(seq);
@@ -32,7 +33,7 @@ void A_output(struct msg message)
     starttimer(0, timeout);
     base++;
   }
-  else if(base < getwinsize())
+  else if(base < winsize)
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
@@ -45,13 +46,17 @@ void A_output(struct msg message)
 void A_input(struct pkt packet)
 {
   ack = 1;
-  if(packet.acknum == nextseq + 1)
+  int winsize = getwinsize();
+  int a = nextseq + 1;
+  int b = previous + winsize;
+  int id = packet.acknum;
+  if(id == a)
   {
     nextseq++;
   }
-  else if(packet.acknum == previous + getwinsize())
+  else if(id == b)
   {
-    previous += getwinsize();
+    previous += winsize;
     stoptimer(0);
     base = 0;
   }
@@ -87,7 +92,9 @@ void A_init()
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
-  if(b_seq == packet.seqnum && checksum(packet) == packet.checksum)
+  int a = packet.seqnum;
+  int check = packet.checksum;
+  if(b_seq == a && checksum(packet) == check)
   {
     tolayer5(1, packet.payload);
     pkt *ACK = new struct pkt;
@@ -96,7 +103,7 @@ void B_input(struct pkt packet)
     tolayer3(1, *ACK);
     b_seq++;
   }
-  else if(b_seq != packet.seqnum && checksum(packet) == packet.checksum)
+  else if(b_seq != a && checksum(packet) == check)
   {
     pkt *ACK = new struct pkt;
     (*ACK).acknum = b_seq - 1;
