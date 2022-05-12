@@ -33,7 +33,7 @@ void A_output(struct msg message)
     seq++;
     base++;
   }
-  else if(base < winsize())
+  else if(base < winsize)
   {
     next_packet = packets.at(seq);
     tolayer3(0, next_packet);
